@@ -5,7 +5,6 @@ import argparse
 import torch
 
 
-
 # Create directories to hold models and logs
 model_dir = 'models'
 log_dir = 'logs'
@@ -30,9 +29,15 @@ def train(env, sb3_algo):
         model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False)
         model.save(f'{model_dir}/{sb3_algo}_{TIMESTEPS*iters}')
 
-def test(env, path_to_model):
+def test(env, path_to_model, model_name):
+    env = gym.wrappers.RecordVideo(env, video_folder="./videos/", name_prefix=f"test-video_{model_name}", episode_trigger=lambda x: x % 2 == 0)
+
     model = sb3_class.load(path_to_model, env=env)
     obs, _ = env.reset()
+
+    ###
+    # Start the recorder
+    env.start_video_recorder()
 
     while True:
         action, _ = model.predict(obs)
@@ -40,13 +45,15 @@ def test(env, path_to_model):
 
         if terminated or truncated:
             break
-
+    ####
+    # Don't forget to close the video recorder before the env!
+    env.close_video_recorder()
 
 
 
 if __name__ == '__main__':
     # Command to train the model
-    # python "Mujoko environment.py" Pendulum-v1 A2C -t
+    # python "Acrobot environment testing.py" Pendulum-v1 TD3 -t
 
     # Command to show the performance in tensorboard
     # tensorboard --logdir logs
@@ -69,10 +76,10 @@ if __name__ == '__main__':
         train(gymenv, args.sb3_algo)
 
     # Command to test the model
-    # python "Mujoko environment.py" Pendulum-v1 A2C -s ./models/A2C_425000.zip
+    # python "Acrobot environment testing.py" Pendulum-v1 SAC -s ./models/SAC_450000.zip 
     if args.test:
         if os.path.isfile(args.test):
-            gymenv = gym.make(args.gymenv, render_mode='human')
-            test(gymenv, path_to_model=args.test)
+            gymenv = gym.make(args.gymenv, render_mode='rgb_array')
+            test(gymenv, path_to_model=args.test, model_name=args.sb3_algo)
         else:
             print(f'{args.test} not found.')
