@@ -53,7 +53,7 @@ def test(env, path_to_model, model_name):
 
 if __name__ == '__main__':
     # Command to train the model
-    # python "Acrobot environment testing.py" Pendulum-v1 TD3 -t
+    # python "Pendulum environment testing.py" Pendulum-v1 TD3 -t
 
     # Command to show the performance in tensorboard
     # tensorboard --logdir logs
@@ -76,7 +76,7 @@ if __name__ == '__main__':
         train(gymenv, args.sb3_algo)
 
     # Command to test the model
-    # python "Acrobot environment testing.py" Pendulum-v1 SAC -s ./models/SAC_450000.zip 
+    # python "Pendulum environment testing.py" Pendulum-v1 SAC -s ./models/SAC_450000.zip 
     if args.test:
         if os.path.isfile(args.test):
             gymenv = gym.make(args.gymenv, render_mode='rgb_array')
