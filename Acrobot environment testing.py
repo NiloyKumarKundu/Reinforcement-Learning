@@ -46,14 +46,14 @@ def test(env, path_to_model):
 
 if __name__ == '__main__':
     # Command to train the model
-    # python "Mujoko environment.py" Humanoid-v4 A2C -t
+    # python "Mujoko environment.py" Pendulum-v1 A2C -t
 
     # Command to show the performance in tensorboard
     # tensorboard --logdir logs
 
     # Parse command line inputs
     parser = argparse.ArgumentParser(description='Train or test model.')
-    parser.add_argument('gymenv', help='Gymnasium environment i.e. Humanoid-v4')
+    parser.add_argument('gymenv', help='Gymnasium environment i.e. Pendulum-v1')
     parser.add_argument('sb3_algo', help='StableBaseline3 RL algorithm i.e. A2C, DDPG, DQN, PPO, SAC, TD3')
     parser.add_argument('-t', '--train', action='store_true')
     parser.add_argument('-s', '--test', metavar='path_to_model')
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         train(gymenv, args.sb3_algo)
 
     # Command to test the model
-    # python "Mujoko environment.py" Humanoid-v4 A2C -s ./models/A2C_425000.zip
+    # python "Mujoko environment.py" Pendulum-v1 A2C -s ./models/A2C_425000.zip
     if args.test:
         if os.path.isfile(args.test):
             gymenv = gym.make(args.gymenv, render_mode='human')
