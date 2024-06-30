@@ -110,6 +110,6 @@ venv.bak/
 .logs/
 models/
 logs/
-./"Huggingface Hub"/model
-./"Huggingface Hub"/.ipynb_checkpoints
+"Huggingface Hub"/model
+"Huggingface Hub"/.ipynb_checkpoints
 videos/
